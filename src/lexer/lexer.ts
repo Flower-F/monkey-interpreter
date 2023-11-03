@@ -1,5 +1,5 @@
 import { SymbolTokenTypes, Token, TokenTypes, getIdentifierType } from "../token/token";
-import { isDigit, isLetter, newToken } from "../common/utils";
+import { isDigit, isLetter } from "../common/utils";
 
 export class Lexer {
   private input: string;
@@ -14,7 +14,7 @@ export class Lexer {
     this.ch = "";
   }
 
-  public static createLexer(input: string): Lexer {
+  public static newLexer(input: string): Lexer {
     const lexer = new Lexer(input);
     lexer.readChar();
     return lexer;
@@ -34,21 +34,21 @@ export class Lexer {
     if (this.ch === "=" && this.getNextChar() === "=") {
       const ch = this.ch;
       this.readChar();
-      token = newToken(SymbolTokenTypes.EQUAL, ch + this.ch);
+      token = Token.newToken(SymbolTokenTypes.EQUAL, ch + this.ch);
       this.readChar(); // do it again to skip the second =
       return token;
     }
     if (this.ch === "!" && this.getNextChar() === "=") {
       const ch = this.ch;
       this.readChar();
-      token = newToken(SymbolTokenTypes.NOT_EQUAL, ch + this.ch);
+      token = Token.newToken(SymbolTokenTypes.NOT_EQUAL, ch + this.ch);
       this.readChar(); // do it again to skip the second =
       return token;
     }
 
     for (const value of Object.values(SymbolTokenTypes)) {
       if (value && this.ch === value) {
-        token = newToken(value, this.ch);
+        token = Token.newToken(value, this.ch);
         this.readChar();
         return token;
       }
@@ -65,7 +65,7 @@ export class Lexer {
       return token;
     }
 
-    token = newToken(TokenTypes.ILLEGAL, this.ch);
+    token = Token.newToken(TokenTypes.ILLEGAL, this.ch);
     this.readChar();
     return token;
   }

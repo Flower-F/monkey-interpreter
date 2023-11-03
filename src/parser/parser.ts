@@ -14,7 +14,7 @@ export class Parser {
     this.errors = [];
   }
 
-  public static createParser(lexer: Lexer): Parser {
+  public static newParser(lexer: Lexer): Parser {
     const parser = new Parser(lexer);
     parser.moveToNextToken();
 
@@ -31,7 +31,7 @@ export class Parser {
   }
 
   public parseProgram(): Program {
-    const program = Program.createProgram();
+    const program = Program.newProgram();
 
     while (!this.expectCurrentToken(TokenTypes.EOF)) {
       const statement = this.parseStatement();
@@ -60,7 +60,7 @@ export class Parser {
     if (!this.curToken) {
       return null;
     }
-    const letStatement = LetStatement.createLetStatement(this.curToken);
+    const letStatement = LetStatement.newLetStatement(this.curToken);
 
     if (!this.expectNextToken(TokenTypes.IDENTIFIER)) {
       this.pushError(TokenTypes.IDENTIFIER);
@@ -68,7 +68,7 @@ export class Parser {
     }
     this.moveToNextToken();
 
-    const identifier = Identifier.createIdentifier(this.curToken, this.curToken.literal);
+    const identifier = Identifier.newIdentifier(this.curToken, this.curToken.literal);
     letStatement.setIdentifier(identifier);
 
     if (!this.expectNextToken(TokenTypes.ASSIGN)) {

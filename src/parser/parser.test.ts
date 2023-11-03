@@ -12,8 +12,8 @@ describe("parser", () => {
       let abcd = 123456;
     `;
 
-    const lexer = Lexer.createLexer(input);
-    const parser = Parser.createParser(lexer);
+    const lexer = Lexer.newLexer(input);
+    const parser = Parser.newParser(lexer);
     const program = parser.parseProgram();
 
     expect(checkParseErrors(parser)).toBeFalsy();

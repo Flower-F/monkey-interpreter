@@ -19,7 +19,7 @@ export class Program implements ASTNode {
     this.statements = statements;
   }
 
-  public static createProgram() {
+  public static newProgram() {
     return new Program([]);
   }
 
@@ -53,7 +53,7 @@ export class Identifier implements Expression {
     this.value = value;
   }
 
-  public static createIdentifier(token: Token, value: string) {
+  public static newIdentifier(token: Token, value: string) {
     return new Identifier(token, value);
   }
 

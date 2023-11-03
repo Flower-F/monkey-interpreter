@@ -1,5 +1,3 @@
-import { Token, TokenType } from "../token/token";
-
 const ASCII_CODE = {
   a: "a".charCodeAt(0),
   A: "A".charCodeAt(0),
@@ -9,13 +7,6 @@ const ASCII_CODE = {
   0: "0".charCodeAt(0),
   9: "9".charCodeAt(0),
 } as const;
-
-export function newToken(tokenType: TokenType, ch: string): Token {
-  return {
-    type: tokenType,
-    literal: ch,
-  };
-}
 
 export function isLetter(ch: string) {
   const charCode = ch.charCodeAt(0);

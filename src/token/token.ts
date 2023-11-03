@@ -48,10 +48,10 @@ export const TokenTypes = {
 
 export type TokenType = (typeof TokenTypes)[keyof typeof TokenTypes];
 
-export type Token = {
-  type: TokenType;
-  literal: string;
-};
+// export type Token = {
+// type: TokenType;
+// literal: string;
+// };
 
 export function getIdentifierType(identifier: string): TokenType {
   for (const value of Object.values(KeywordTokenTypes)) {
@@ -61,4 +61,18 @@ export function getIdentifierType(identifier: string): TokenType {
   }
 
   return TokenTypes.IDENTIFIER;
+}
+
+export class Token {
+  public type: TokenType;
+  public literal: string;
+
+  private constructor(type: TokenType, literal: string) {
+    this.type = type;
+    this.literal = literal;
+  }
+
+  public static newToken(type: TokenType, literal: string) {
+    return new Token(type, literal);
+  }
 }

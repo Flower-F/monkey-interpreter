@@ -121,7 +121,7 @@ describe("Lexer", () => {
       { expectedType: TokenTypes.EOF, expectedLiteral: "" },
     ];
 
-    const lexer = Lexer.createLexer(input);
+    const lexer = Lexer.newLexer(input);
 
     for (const test of tests) {
       const curToken = lexer.getNextToken();

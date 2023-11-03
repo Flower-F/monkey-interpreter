@@ -11,7 +11,7 @@ export class LetStatement implements Statement {
     this.token = token;
   }
 
-  public static createLetStatement(token: Token) {
+  public static newLetStatement(token: Token) {
     return new LetStatement(token);
   }
 

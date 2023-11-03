@@ -11,7 +11,7 @@ const cli = readline.createInterface({
 cli.prompt();
 
 cli.on("line", (input) => {
-  const lexer = Lexer.createLexer(input);
+  const lexer = Lexer.newLexer(input);
 
   // eslint-disable-next-line no-constant-condition
   while (true) {
