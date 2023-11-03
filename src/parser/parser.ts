@@ -16,7 +16,6 @@ export class Parser {
 
   public static createParser(lexer: Lexer): Parser {
     const parser = new Parser(lexer);
-
     parser.moveToNextToken();
 
     return parser;
@@ -94,7 +93,7 @@ export class Parser {
   }
 
   private pushError(tokenType: TokenType) {
-    const message = `expected next token to be ${tokenType}, got ${this.nextToken} instead`;
+    const message = `expected next token type to be ${tokenType}, got ${this.nextToken?.type} instead`;
     this.errors.push(message);
   }
 }
