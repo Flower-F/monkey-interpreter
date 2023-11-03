@@ -11,11 +11,11 @@ const cli = readline.createInterface({
 cli.prompt();
 
 cli.on("line", (input) => {
-  const lexer = Lexer.newLexer(input);
+  const lexer = Lexer.createLexer(input);
 
   // eslint-disable-next-line no-constant-condition
   while (true) {
-    const token = lexer.nextToken();
+    const token = lexer.getNextToken();
     console.log(token);
 
     if (token.type === TokenTypes.EOF) {

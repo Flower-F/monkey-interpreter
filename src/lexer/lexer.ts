@@ -14,13 +14,13 @@ export class Lexer {
     this.ch = "";
   }
 
-  public static newLexer(input: string): Lexer {
+  public static createLexer(input: string): Lexer {
     const lexer = new Lexer(input);
     lexer.readChar();
     return lexer;
   }
 
-  public nextToken(): Token {
+  public getNextToken(): Token {
     this.skipWhiteSpace();
 
     let token: Token = {
@@ -31,18 +31,18 @@ export class Lexer {
     if (this.ch === "") {
       return token;
     }
-    if (this.ch === "=" && this.getChar() === "=") {
+    if (this.ch === "=" && this.getNextChar() === "=") {
       const ch = this.ch;
       this.readChar();
       token = newToken(SymbolTokenTypes.EQUAL, ch + this.ch);
-      this.readChar(); // do it again to include the second =
+      this.readChar(); // do it again to skip the second =
       return token;
     }
-    if (this.ch === "!" && this.getChar() === "=") {
+    if (this.ch === "!" && this.getNextChar() === "=") {
       const ch = this.ch;
       this.readChar();
       token = newToken(SymbolTokenTypes.NOT_EQUAL, ch + this.ch);
-      this.readChar(); // do it again to include the second =
+      this.readChar(); // do it again to skip the second =
       return token;
     }
 
@@ -61,7 +61,7 @@ export class Lexer {
     }
     if (isDigit(this.ch)) {
       token.literal = this.readNumber();
-      token.type = TokenTypes.INT;
+      token.type = TokenTypes.INTEGER;
       return token;
     }
 
@@ -100,7 +100,7 @@ export class Lexer {
     }
   }
 
-  private getChar() {
+  private getNextChar() {
     return this.input[this.readPosition] || "";
   }
 }

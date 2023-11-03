@@ -35,7 +35,7 @@ export const KeywordTokenTypes = {
 // Custom Token
 export const CustomTokenTypes = {
   IDENTIFIER: "IDENTIFIER",
-  INT: "INT",
+  INTEGER: "INTEGER",
 };
 
 export const TokenTypes = {

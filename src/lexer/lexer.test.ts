@@ -26,14 +26,14 @@ describe("Lexer", () => {
       { expectedType: TokenTypes.LET, expectedLiteral: "let" },
       { expectedType: TokenTypes.IDENTIFIER, expectedLiteral: "five" },
       { expectedType: TokenTypes.ASSIGN, expectedLiteral: "=" },
-      { expectedType: TokenTypes.INT, expectedLiteral: "5" },
+      { expectedType: TokenTypes.INTEGER, expectedLiteral: "5" },
       { expectedType: TokenTypes.SEMICOLON, expectedLiteral: ";" },
 
       // let ten = 10;
       { expectedType: TokenTypes.LET, expectedLiteral: "let" },
       { expectedType: TokenTypes.IDENTIFIER, expectedLiteral: "ten" },
       { expectedType: TokenTypes.ASSIGN, expectedLiteral: "=" },
-      { expectedType: TokenTypes.INT, expectedLiteral: "10" },
+      { expectedType: TokenTypes.INTEGER, expectedLiteral: "10" },
       { expectedType: TokenTypes.SEMICOLON, expectedLiteral: ";" },
 
       // let add = fn(x, y) {
@@ -72,15 +72,15 @@ describe("Lexer", () => {
       { expectedType: TokenTypes.MINUS, expectedLiteral: "-" },
       { expectedType: TokenTypes.DIVISION, expectedLiteral: "/" },
       { expectedType: TokenTypes.MULTIPLE, expectedLiteral: "*" },
-      { expectedType: TokenTypes.INT, expectedLiteral: "5" },
+      { expectedType: TokenTypes.INTEGER, expectedLiteral: "5" },
       { expectedType: TokenTypes.SEMICOLON, expectedLiteral: ";" },
 
       // 5 < 10 > 5;
-      { expectedType: TokenTypes.INT, expectedLiteral: "5" },
+      { expectedType: TokenTypes.INTEGER, expectedLiteral: "5" },
       { expectedType: TokenTypes.LESS_THAN, expectedLiteral: "<" },
-      { expectedType: TokenTypes.INT, expectedLiteral: "10" },
+      { expectedType: TokenTypes.INTEGER, expectedLiteral: "10" },
       { expectedType: TokenTypes.GREATER_THAN, expectedLiteral: ">" },
-      { expectedType: TokenTypes.INT, expectedLiteral: "5" },
+      { expectedType: TokenTypes.INTEGER, expectedLiteral: "5" },
       { expectedType: TokenTypes.SEMICOLON, expectedLiteral: ";" },
 
       // if (5 < 10) {
@@ -90,9 +90,9 @@ describe("Lexer", () => {
       // }
       { expectedType: TokenTypes.IF, expectedLiteral: "if" },
       { expectedType: TokenTypes.LEFT_PAREN, expectedLiteral: "(" },
-      { expectedType: TokenTypes.INT, expectedLiteral: "5" },
+      { expectedType: TokenTypes.INTEGER, expectedLiteral: "5" },
       { expectedType: TokenTypes.LESS_THAN, expectedLiteral: "<" },
-      { expectedType: TokenTypes.INT, expectedLiteral: "10" },
+      { expectedType: TokenTypes.INTEGER, expectedLiteral: "10" },
       { expectedType: TokenTypes.RIGHT_PAREN, expectedLiteral: ")" },
       { expectedType: TokenTypes.LEFT_BRACE, expectedLiteral: "{" },
       { expectedType: TokenTypes.RETURN, expectedLiteral: "return" },
@@ -107,24 +107,24 @@ describe("Lexer", () => {
       { expectedType: TokenTypes.RIGHT_BRACE, expectedLiteral: "}" },
 
       // 10 == 10;
-      { expectedType: TokenTypes.INT, expectedLiteral: "10" },
+      { expectedType: TokenTypes.INTEGER, expectedLiteral: "10" },
       { expectedType: TokenTypes.EQUAL, expectedLiteral: "==" },
-      { expectedType: TokenTypes.INT, expectedLiteral: "10" },
+      { expectedType: TokenTypes.INTEGER, expectedLiteral: "10" },
       { expectedType: TokenTypes.SEMICOLON, expectedLiteral: ";" },
 
       // 10 != 9;
-      { expectedType: TokenTypes.INT, expectedLiteral: "10" },
+      { expectedType: TokenTypes.INTEGER, expectedLiteral: "10" },
       { expectedType: TokenTypes.NOT_EQUAL, expectedLiteral: "!=" },
-      { expectedType: TokenTypes.INT, expectedLiteral: "9" },
+      { expectedType: TokenTypes.INTEGER, expectedLiteral: "9" },
       { expectedType: TokenTypes.SEMICOLON, expectedLiteral: ";" },
 
       { expectedType: TokenTypes.EOF, expectedLiteral: "" },
     ];
 
-    const lexer = Lexer.newLexer(input);
+    const lexer = Lexer.createLexer(input);
 
     for (const test of tests) {
-      const curToken = lexer.nextToken();
+      const curToken = lexer.getNextToken();
       expect(curToken.type).toEqual(test.expectedType);
       expect(curToken.literal).toEqual(test.expectedLiteral);
     }
