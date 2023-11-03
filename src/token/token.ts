@@ -36,7 +36,7 @@ export const KeywordTokenTypes = {
 export const CustomTokenTypes = {
   IDENTIFIER: "IDENTIFIER",
   INTEGER: "INTEGER",
-};
+} as const;
 
 export const TokenTypes = {
   ...SymbolTokenTypes,
@@ -47,11 +47,6 @@ export const TokenTypes = {
 } as const;
 
 export type TokenType = (typeof TokenTypes)[keyof typeof TokenTypes];
-
-// export type Token = {
-// type: TokenType;
-// literal: string;
-// };
 
 export function getIdentifierType(identifier: string): TokenType {
   for (const value of Object.values(KeywordTokenTypes)) {
