@@ -1,5 +1,7 @@
-import { Identifier, Program } from "../ast/ast";
-import { LetStatement } from "../ast/statements/let";
+import { Identifier } from "../ast/identifier";
+import { Program } from "../ast/program";
+import { LetStatement } from "../ast/statements/letStatement";
+import { ReturnStatement } from "../ast/statements/returnStatement";
 import { Lexer } from "../lexer/lexer";
 import { Token, TokenType, TokenTypes } from "../token/token";
 
@@ -33,7 +35,7 @@ export class Parser {
   public parseProgram(): Program {
     const program = Program.newProgram();
 
-    while (!this.expectCurrentToken(TokenTypes.EOF)) {
+    while (!this.expectCurrentTokenIs(TokenTypes.EOF)) {
       const statement = this.parseStatement();
       if (statement) {
         program.pushStatement(statement);
@@ -50,45 +52,63 @@ export class Parser {
       case TokenTypes.LET: {
         return this.parseLetStatement();
       }
+      case TokenTypes.RETURN: {
+        return this.parseReturnStatement();
+      }
       default: {
         return null;
       }
     }
   }
 
-  private parseLetStatement() {
+  private parseLetStatement(): LetStatement | null {
     if (!this.curToken) {
       return null;
     }
     const letStatement = LetStatement.newLetStatement(this.curToken);
 
-    if (!this.expectNextToken(TokenTypes.IDENTIFIER)) {
+    if (!this.expectNextTokenIs(TokenTypes.IDENTIFIER)) {
       this.pushError(TokenTypes.IDENTIFIER);
       return null;
     }
     this.moveToNextToken();
 
     const identifier = Identifier.newIdentifier(this.curToken, this.curToken.literal);
-    letStatement.setIdentifier(identifier);
+    letStatement.setName(identifier);
 
-    if (!this.expectNextToken(TokenTypes.ASSIGN)) {
+    if (!this.expectNextTokenIs(TokenTypes.ASSIGN)) {
       this.pushError(TokenTypes.ASSIGN);
       return null;
     }
     this.moveToNextToken();
 
-    while (!this.expectCurrentToken(TokenTypes.SEMICOLON)) {
+    while (!this.expectCurrentTokenIs(TokenTypes.SEMICOLON)) {
       this.moveToNextToken();
     }
 
     return letStatement;
   }
 
-  private expectCurrentToken(tokenType: TokenType) {
+  private parseReturnStatement(): ReturnStatement | null {
+    if (!this.curToken) {
+      return null;
+    }
+
+    const statement = ReturnStatement.newReturnStatement(this.curToken);
+    this.moveToNextToken();
+
+    while (!this.expectCurrentTokenIs(TokenTypes.SEMICOLON)) {
+      this.moveToNextToken();
+    }
+
+    return statement;
+  }
+
+  private expectCurrentTokenIs(tokenType: TokenType) {
     return this.curToken?.type === tokenType;
   }
 
-  private expectNextToken(tokenType: TokenType) {
+  private expectNextTokenIs(tokenType: TokenType) {
     return this.nextToken?.type === tokenType;
   }
 
