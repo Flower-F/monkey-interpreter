@@ -31,11 +31,11 @@ export class Program implements ASTNode {
     return "";
   };
 
-  public string = () => {
+  public toString = () => {
     let out = "";
 
     this.statements.forEach((statement) => {
-      out = statement.string();
+      out = statement.toString();
     });
 
     return out;

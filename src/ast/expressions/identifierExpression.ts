@@ -24,7 +24,7 @@ export class IdentifierExpression implements Expression {
     return this.token.literal;
   };
 
-  public string = () => {
+  public toString = () => {
     return this.value;
   };
 }

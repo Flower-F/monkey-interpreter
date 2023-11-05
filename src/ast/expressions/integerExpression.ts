@@ -24,7 +24,7 @@ export class IntegerExpression implements Expression {
     return this.token.literal;
   };
 
-  public string = () => {
-    return this.value.toString();
+  public toString = () => {
+    return this.value.totoString();
   };
 }

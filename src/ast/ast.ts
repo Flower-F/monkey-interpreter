@@ -1,6 +1,6 @@
 export interface ASTNode {
   tokenLiteral: () => string;
-  string: () => string;
+  toString: () => string;
 }
 
 export interface Statement extends ASTNode {

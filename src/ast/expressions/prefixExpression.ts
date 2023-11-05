@@ -33,8 +33,10 @@ export class PrefixExpression implements Expression {
     return this.token.literal;
   };
 
-  public string = () => {
-    const out = "(" + this.operator + (this.value?.string() || "") + ")";
+  public toString = () => {
+    const operator = this.operator;
+    const value = this.value?.toString() || "";
+    const out = "(" + operator + value + ")";
     return out;
   };
 }

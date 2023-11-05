@@ -9,28 +9,28 @@ export class ExpressionStatement implements Statement {
     this.token = token;
   }
 
-  public static newExpressionStatement(token: Token) {
+  public static newExpressionStatement = (token: Token) => {
     return new ExpressionStatement(token);
-  }
+  };
 
-  public getExpression() {
+  public getExpression = () => {
     return this.expression;
-  }
+  };
 
-  public setExpression(expression?: Expression | null) {
+  public setExpression = (expression?: Expression | null) => {
     this.expression = expression;
-  }
+  };
 
-  public statementNode() {}
+  public statementNode = () => {};
 
-  public tokenLiteral() {
+  public tokenLiteral = () => {
     return this.token.literal;
-  }
+  };
 
-  public string() {
+  public toString = () => {
     if (this.expression) {
-      return this.expression.string();
+      return this.expression.toString();
     }
     return "";
-  }
+  };
 }

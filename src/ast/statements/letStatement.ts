@@ -37,8 +37,10 @@ export class LetStatement implements Statement {
     return this.token.literal;
   };
 
-  public string = () => {
-    const out = this.tokenLiteral() + " " + (this.name?.string() || "") + " = " + (this.value?.string() || "") + ";";
+  public toString = () => {
+    const name = this.name?.toString() || "";
+    const value = this.value?.toString() || "";
+    const out = this.tokenLiteral() + " " + name + " = " + value + ";";
     return out;
   };
 }

@@ -14,19 +14,16 @@ export class Lexer {
     this.ch = "";
   }
 
-  public static newLexer = (input: string): Lexer => {
+  public static newLexer = (input: string) => {
     const lexer = new Lexer(input);
     lexer.readChar();
     return lexer;
   };
 
-  public getNextToken = (): Token => {
+  public getNextToken = () => {
     this.skipWhiteSpace();
 
-    let token: Token = {
-      type: TokenTypes.EOF,
-      literal: "",
-    };
+    let token = Token.newToken(TokenTypes.EOF, "");
 
     if (this.ch === "") {
       return token;

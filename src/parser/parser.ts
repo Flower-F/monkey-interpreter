@@ -35,7 +35,7 @@ export class Parser {
     this.errors = [];
   }
 
-  public static newParser = (lexer: Lexer): Parser => {
+  public static newParser = (lexer: Lexer) => {
     const parser = new Parser(lexer);
     parser.moveToNextToken();
     parser.moveToNextToken();
@@ -86,14 +86,14 @@ export class Parser {
     }
   };
 
-  private parseLetStatement = (): LetStatement | null => {
+  private parseLetStatement = () => {
     if (!this.curToken) {
       return null;
     }
     const letStatement = LetStatement.newLetStatement(this.curToken);
 
     if (!this.expectNextTokenIs(TokenTypes.IDENTIFIER)) {
-      this.pushTokenParseError(TokenTypes.IDENTIFIER);
+      this.pushNextTokenParseError(TokenTypes.IDENTIFIER);
       return null;
     }
     this.moveToNextToken();
@@ -102,7 +102,7 @@ export class Parser {
     letStatement.setName(identifier);
 
     if (!this.expectNextTokenIs(TokenTypes.ASSIGN)) {
-      this.pushTokenParseError(TokenTypes.ASSIGN);
+      this.pushNextTokenParseError(TokenTypes.ASSIGN);
       return null;
     }
     this.moveToNextToken();
@@ -114,7 +114,7 @@ export class Parser {
     return letStatement;
   };
 
-  private parseReturnStatement = (): ReturnStatement | null => {
+  private parseReturnStatement = () => {
     if (!this.curToken) {
       return null;
     }
@@ -129,7 +129,7 @@ export class Parser {
     return statement;
   };
 
-  private parseExpressionStatement = (): ExpressionStatement | null => {
+  private parseExpressionStatement = () => {
     if (!this.curToken) {
       return null;
     }
@@ -144,7 +144,7 @@ export class Parser {
     return statement;
   };
 
-  private parseExpression = (precedence: number): Expression | null => {
+  private parseExpression = (precedence: number) => {
     if (!this.curToken) {
       return null;
     }
@@ -159,7 +159,7 @@ export class Parser {
     return leftExpression;
   };
 
-  private parseIdentifier = (): IdentifierExpression | null => {
+  private parseIdentifier = () => {
     if (!this.curToken) {
       return null;
     }
@@ -167,7 +167,7 @@ export class Parser {
     return IdentifierExpression.newIdentifierExpression(this.curToken, this.curToken.literal);
   };
 
-  private parseInteger = (): IntegerExpression | null => {
+  private parseInteger = () => {
     if (!this.curToken) {
       return null;
     }
@@ -181,7 +181,7 @@ export class Parser {
     return IntegerExpression.newIntegerExpression(this.curToken, Number(this.curToken.literal));
   };
 
-  private parsePrefixExpression = (): Expression | null => {
+  private parsePrefixExpression = () => {
     if (!this.curToken) {
       return null;
     }
@@ -201,7 +201,7 @@ export class Parser {
     return this.nextToken?.type === tokenType;
   };
 
-  private pushTokenParseError = (tokenType: TokenType) => {
+  private pushNextTokenParseError = (tokenType: TokenType) => {
     const message = `expected next token type to be ${tokenType}, got ${this.nextToken?.type} instead`;
     this.errors.push(message);
   };
