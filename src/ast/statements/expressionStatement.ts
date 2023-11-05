@@ -3,10 +3,21 @@ import { Expression, Statement } from "../ast";
 
 export class ExpressionStatement implements Statement {
   private token: Token;
-  private expression: Expression;
+  private expression?: Expression | null;
 
-  private constructor(token: Token, expression: Expression) {
+  private constructor(token: Token) {
     this.token = token;
+  }
+
+  public static newExpressionStatement(token: Token) {
+    return new ExpressionStatement(token);
+  }
+
+  public getExpression() {
+    return this.expression;
+  }
+
+  public setExpression(expression?: Expression | null) {
     this.expression = expression;
   }
 

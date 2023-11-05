@@ -67,7 +67,7 @@ export class Token {
     this.literal = literal;
   }
 
-  public static newToken(type: TokenType, literal: string) {
-    return new Token(type, literal);
+  public static newToken(tokenType: TokenType, literal: string) {
+    return new Token(tokenType, literal);
   }
 }

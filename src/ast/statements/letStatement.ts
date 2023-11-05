@@ -4,8 +4,8 @@ import { Identifier } from "../identifier";
 
 export class LetStatement implements Statement {
   private token: Token;
-  private name?: Identifier | undefined;
-  private value?: Expression;
+  private name?: Identifier;
+  private value?: Expression | null;
 
   private constructor(token: Token) {
     this.token = token;

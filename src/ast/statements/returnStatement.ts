@@ -3,7 +3,7 @@ import { Expression, Statement } from "../ast";
 
 export class ReturnStatement implements Statement {
   token: Token;
-  returnValue?: Expression;
+  returnValue?: Expression | null;
 
   private constructor(token: Token) {
     this.token = token;

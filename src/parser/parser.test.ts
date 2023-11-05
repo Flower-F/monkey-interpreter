@@ -4,6 +4,8 @@ import { Parser } from "./parser";
 import { Statement } from "../ast/ast";
 import { LetStatement } from "../ast/statements/letStatement";
 import { ReturnStatement } from "../ast/statements/returnStatement";
+import { ExpressionStatement } from "../ast/statements/expressionStatement";
+import { Identifier } from "../ast/identifier";
 
 describe("parser", () => {
   it("should parse let statement", () => {
@@ -48,6 +50,30 @@ describe("parser", () => {
 
     statements.forEach((statement) => {
       expect(testReturnStatement(statement)).toBeTruthy();
+    });
+  });
+
+  it("should parse identifier expression", () => {
+    const input = "abcd;";
+    const lexer = Lexer.newLexer(input);
+    const parser = Parser.newParser(lexer);
+    const program = parser.parseProgram();
+
+    expect(checkParseErrors(parser)).toBeFalsy();
+    expect(program).toBeDefined();
+
+    const statements = program.getStatements();
+    expect(program.getStatements()).toHaveLength(1);
+
+    statements.forEach((statement) => {
+      expect(statement instanceof ExpressionStatement).toBeTruthy();
+
+      const expression = (statement as ExpressionStatement).getExpression();
+      expect(expression instanceof Identifier).toBeTruthy();
+
+      const identifier = expression as Identifier;
+      expect(identifier.getValue()).toBe("abcd");
+      expect(identifier.tokenLiteral()).toBe("abcd");
     });
   });
 });
