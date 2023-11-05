@@ -25,6 +25,6 @@ export class IntegerExpression implements Expression {
   };
 
   public toString = () => {
-    return this.value.totoString();
+    return this.value.toString();
   };
 }
