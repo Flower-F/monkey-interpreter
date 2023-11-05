@@ -1,5 +1,6 @@
 import { Expression } from "../ast/ast";
 import { Identifier } from "../ast/identifier";
+import { Integer } from "../ast/integer";
 import { Program } from "../ast/program";
 import { ExpressionStatement } from "../ast/statements/expressionStatement";
 import { LetStatement } from "../ast/statements/letStatement";
@@ -39,6 +40,7 @@ export class Parser {
     parser.moveToNextToken();
 
     parser.registerPrefix(TokenTypes.IDENTIFIER, parser.parseIdentifier);
+    parser.registerPrefix(TokenTypes.INTEGER, parser.parseInteger);
 
     return parser;
   };
@@ -159,6 +161,20 @@ export class Parser {
     }
 
     return Identifier.newIdentifier(this.curToken, this.curToken.literal);
+  };
+
+  private parseInteger = (): Integer | null => {
+    if (!this.curToken) {
+      return null;
+    }
+
+    const value = parseInt(this.curToken.literal);
+    if (Number.isNaN(value)) {
+      const message = `could not parse ${this.curToken.literal} as an integer`;
+      this.errors.push(message);
+    }
+
+    return Integer.newInteger(this.curToken, Number(this.curToken.literal));
   };
 
   private expectCurrentTokenIs = (tokenType: TokenType) => {

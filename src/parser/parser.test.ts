@@ -1,11 +1,11 @@
 import { describe, it, expect } from "vitest";
 import { Lexer } from "../lexer/lexer";
 import { Parser } from "./parser";
-import { Statement } from "../ast/ast";
 import { LetStatement } from "../ast/statements/letStatement";
 import { ReturnStatement } from "../ast/statements/returnStatement";
 import { ExpressionStatement } from "../ast/statements/expressionStatement";
 import { Identifier } from "../ast/identifier";
+import { Integer } from "../ast/integer";
 
 describe("parser", () => {
   it("should parse let statement", () => {
@@ -21,13 +21,20 @@ describe("parser", () => {
 
     expect(checkParseErrors(parser)).toBeFalsy();
     expect(program).toBeDefined();
-    expect(program.getStatements()).toHaveLength(3);
+
+    const statements = program.getStatements();
+    expect(statements).toHaveLength(3);
 
     const tests = ["x", "y", "abcd"];
     tests.forEach((expected, index) => {
-      const statements = program.getStatements() || [];
       const statement = statements[index];
-      expect(testLetStatement(expected, statement)).toBeTruthy();
+
+      expect(statement?.tokenLiteral()).toBe("let");
+      expect(statement instanceof LetStatement).toBeTruthy();
+
+      const letStatement = statement as LetStatement;
+      expect(letStatement.getName()?.getValue()).toBe(expected);
+      expect(letStatement.getName()?.tokenLiteral()).toBe(expected);
     });
   });
 
@@ -46,10 +53,11 @@ describe("parser", () => {
     expect(program).toBeDefined();
 
     const statements = program.getStatements();
-    expect(program.getStatements()).toHaveLength(3);
+    expect(statements).toHaveLength(3);
 
     statements.forEach((statement) => {
-      expect(testReturnStatement(statement)).toBeTruthy();
+      expect(statement.tokenLiteral()).toBe("return");
+      expect(statement instanceof ReturnStatement).toBeTruthy();
     });
   });
 
@@ -63,7 +71,7 @@ describe("parser", () => {
     expect(program).toBeDefined();
 
     const statements = program.getStatements();
-    expect(program.getStatements()).toHaveLength(1);
+    expect(statements).toHaveLength(1);
 
     statements.forEach((statement) => {
       expect(statement instanceof ExpressionStatement).toBeTruthy();
@@ -76,36 +84,31 @@ describe("parser", () => {
       expect(identifier.tokenLiteral()).toBe("abcd");
     });
   });
+
+  it("should parse integer literal expression", () => {
+    const input = "5;";
+    const lexer = Lexer.newLexer(input);
+    const parser = Parser.newParser(lexer);
+    const program = parser.parseProgram();
+
+    expect(checkParseErrors(parser)).toBeFalsy();
+    expect(program).toBeDefined();
+
+    const statements = program.getStatements();
+    expect(statements).toHaveLength(1);
+
+    statements.forEach((statement) => {
+      expect(statement instanceof ExpressionStatement).toBeTruthy();
+
+      const expression = (statement as ExpressionStatement).getExpression();
+      expect(expression instanceof Integer).toBeTruthy();
+
+      const integerLiteral = expression as Integer;
+      expect(integerLiteral.getValue()).toBe(5);
+      expect(integerLiteral.tokenLiteral()).toBe("5");
+    });
+  });
 });
-
-function testLetStatement(expected: string, statement?: Statement) {
-  if (!statement) {
-    return false;
-  }
-
-  if (
-    statement.tokenLiteral() !== "let" ||
-    !(statement instanceof LetStatement) ||
-    statement.getName()?.getValue() !== expected ||
-    statement.getName()?.tokenLiteral() !== expected
-  ) {
-    return false;
-  }
-
-  return true;
-}
-
-function testReturnStatement(statement?: Statement) {
-  if (!statement) {
-    return false;
-  }
-
-  if (statement.tokenLiteral() !== "return" || !(statement instanceof ReturnStatement)) {
-    return false;
-  }
-
-  return true;
-}
 
 function checkParseErrors(parser: Parser) {
   const errors = parser.getErrors();
