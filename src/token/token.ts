@@ -5,6 +5,7 @@ export const SymbolTokenTypes = {
   MINUS: "-",
   DIVISION: "/",
   MULTIPLE: "*",
+  NOT: "!",
 
   GREATER_THAN: ">",
   LESS_THAN: "<",
@@ -13,7 +14,6 @@ export const SymbolTokenTypes = {
 
   COMMA: ",",
   SEMICOLON: ";",
-  BANG: "!",
 
   LEFT_PAREN: "(",
   RIGHT_PAREN: ")",

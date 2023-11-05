@@ -1,6 +1,7 @@
 import { Expression } from "../ast/ast";
-import { Identifier } from "../ast/identifier";
-import { Integer } from "../ast/integer";
+import { IdentifierExpression } from "../ast/expressions/identifierExpression";
+import { IntegerExpression } from "../ast/expressions/integerExpression";
+import { PrefixExpression } from "../ast/expressions/prefixExpression";
 import { Program } from "../ast/program";
 import { ExpressionStatement } from "../ast/statements/expressionStatement";
 import { LetStatement } from "../ast/statements/letStatement";
@@ -41,6 +42,8 @@ export class Parser {
 
     parser.registerPrefix(TokenTypes.IDENTIFIER, parser.parseIdentifier);
     parser.registerPrefix(TokenTypes.INTEGER, parser.parseInteger);
+    parser.registerPrefix(TokenTypes.NOT, parser.parsePrefixExpression);
+    parser.registerPrefix(TokenTypes.MINUS, parser.parsePrefixExpression);
 
     return parser;
   };
@@ -90,16 +93,16 @@ export class Parser {
     const letStatement = LetStatement.newLetStatement(this.curToken);
 
     if (!this.expectNextTokenIs(TokenTypes.IDENTIFIER)) {
-      this.pushError(TokenTypes.IDENTIFIER);
+      this.pushTokenParseError(TokenTypes.IDENTIFIER);
       return null;
     }
     this.moveToNextToken();
 
-    const identifier = Identifier.newIdentifier(this.curToken, this.curToken.literal);
+    const identifier = IdentifierExpression.newIdentifierExpression(this.curToken, this.curToken.literal);
     letStatement.setName(identifier);
 
     if (!this.expectNextTokenIs(TokenTypes.ASSIGN)) {
-      this.pushError(TokenTypes.ASSIGN);
+      this.pushTokenParseError(TokenTypes.ASSIGN);
       return null;
     }
     this.moveToNextToken();
@@ -148,6 +151,7 @@ export class Parser {
 
     const prefix = this.prefixParseFunctionMap.get(this.curToken.type);
     if (!prefix) {
+      this.pushNoPrefixParseFnError(this.curToken.type);
       return null;
     }
 
@@ -155,15 +159,15 @@ export class Parser {
     return leftExpression;
   };
 
-  private parseIdentifier = (): Identifier | null => {
+  private parseIdentifier = (): IdentifierExpression | null => {
     if (!this.curToken) {
       return null;
     }
 
-    return Identifier.newIdentifier(this.curToken, this.curToken.literal);
+    return IdentifierExpression.newIdentifierExpression(this.curToken, this.curToken.literal);
   };
 
-  private parseInteger = (): Integer | null => {
+  private parseInteger = (): IntegerExpression | null => {
     if (!this.curToken) {
       return null;
     }
@@ -174,7 +178,19 @@ export class Parser {
       this.errors.push(message);
     }
 
-    return Integer.newInteger(this.curToken, Number(this.curToken.literal));
+    return IntegerExpression.newIntegerExpression(this.curToken, Number(this.curToken.literal));
+  };
+
+  private parsePrefixExpression = (): Expression | null => {
+    if (!this.curToken) {
+      return null;
+    }
+
+    const expression = PrefixExpression.newPrefixExpression(this.curToken, this.curToken.literal);
+    this.moveToNextToken();
+    expression.setValue(this.parseExpression(PrecedenceTable.PREFIX));
+
+    return expression;
   };
 
   private expectCurrentTokenIs = (tokenType: TokenType) => {
@@ -185,10 +201,15 @@ export class Parser {
     return this.nextToken?.type === tokenType;
   };
 
-  private pushError = (tokenType: TokenType) => {
+  private pushTokenParseError = (tokenType: TokenType) => {
     const message = `expected next token type to be ${tokenType}, got ${this.nextToken?.type} instead`;
     this.errors.push(message);
   };
+
+  private pushNoPrefixParseFnError(tokenType: TokenType) {
+    const msg = `no prefix parse function for ${tokenType} found`;
+    this.errors.push(msg);
+  }
 
   private registerPrefix = (tokenType: TokenType, prefixParseFn: PrefixParseFunction) => {
     this.prefixParseFunctionMap.set(tokenType, prefixParseFn);

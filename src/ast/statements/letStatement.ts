@@ -1,10 +1,10 @@
 import { Token } from "../../token/token";
 import { Expression, Statement } from "../ast";
-import { Identifier } from "../identifier";
+import { IdentifierExpression } from "../expressions/identifierExpression";
 
 export class LetStatement implements Statement {
   private token: Token;
-  private name?: Identifier;
+  private name?: IdentifierExpression;
   private value?: Expression | null;
 
   private constructor(token: Token) {
@@ -15,7 +15,7 @@ export class LetStatement implements Statement {
     return new LetStatement(token);
   };
 
-  public setName = (name?: Identifier) => {
+  public setName = (name?: IdentifierExpression) => {
     this.name = name;
   };
 
@@ -38,17 +38,7 @@ export class LetStatement implements Statement {
   };
 
   public string = () => {
-    let out = "";
-
-    out += this.tokenLiteral() + " ";
-    out += this.name?.string();
-    out += " = ";
-
-    if (this.value) {
-      out += this.value.string();
-    }
-
-    out += ";";
+    const out = this.tokenLiteral() + " " + (this.name?.string() || "") + " = " + (this.value?.string() || "") + ";";
     return out;
   };
 }

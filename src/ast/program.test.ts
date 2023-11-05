@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import { Program } from "./program";
 import { LetStatement } from "./statements/letStatement";
 import { TokenTypes } from "../token/token";
-import { Identifier } from "./identifier";
+import { IdentifierExpression } from "./expressions/identifierExpression";
 
 describe("AST", () => {
   it("should return proper string in string method", () => {
@@ -12,7 +12,7 @@ describe("AST", () => {
       literal: "let",
     });
     letStatement.setName(
-      Identifier.newIdentifier(
+      IdentifierExpression.newIdentifierExpression(
         {
           type: TokenTypes.IDENTIFIER,
           literal: "myVar",
@@ -21,7 +21,7 @@ describe("AST", () => {
       ),
     );
     letStatement.setValue(
-      Identifier.newIdentifier(
+      IdentifierExpression.newIdentifierExpression(
         {
           type: TokenTypes.IDENTIFIER,
           literal: "anotherVar",

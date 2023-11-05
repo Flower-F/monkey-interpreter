@@ -20,14 +20,7 @@ export class ReturnStatement implements Statement {
   };
 
   public string = () => {
-    let out = "";
-
-    out += this.tokenLiteral() + " ";
-    if (this.returnValue) {
-      out += this.returnValue.string();
-    }
-    out += ";";
-
+    const out = this.tokenLiteral() + " " + (this.returnValue?.string() || "") + ";";
     return out;
   };
 }

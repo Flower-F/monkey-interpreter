@@ -68,7 +68,7 @@ describe("Lexer", () => {
       { expectedType: TokenTypes.SEMICOLON, expectedLiteral: ";" },
 
       // !-/*5;
-      { expectedType: TokenTypes.BANG, expectedLiteral: "!" },
+      { expectedType: TokenTypes.NOT, expectedLiteral: "!" },
       { expectedType: TokenTypes.MINUS, expectedLiteral: "-" },
       { expectedType: TokenTypes.DIVISION, expectedLiteral: "/" },
       { expectedType: TokenTypes.MULTIPLE, expectedLiteral: "*" },

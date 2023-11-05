@@ -1,7 +1,7 @@
-import { Token } from "../token/token";
-import { Expression } from "./ast";
+import { Token } from "../../token/token";
+import { Expression } from "../ast";
 
-export class Identifier implements Expression {
+export class IdentifierExpression implements Expression {
   private token: Token;
   private value: string;
 
@@ -10,8 +10,8 @@ export class Identifier implements Expression {
     this.value = value;
   }
 
-  public static newIdentifier = (token: Token, value: string) => {
-    return new Identifier(token, value);
+  public static newIdentifierExpression = (token: Token, value: string) => {
+    return new IdentifierExpression(token, value);
   };
 
   public getValue = () => {
