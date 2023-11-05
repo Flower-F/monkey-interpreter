@@ -10,21 +10,21 @@ export class Identifier implements Expression {
     this.value = value;
   }
 
-  public static newIdentifier(token: Token, value: string) {
+  public static newIdentifier = (token: Token, value: string) => {
     return new Identifier(token, value);
-  }
+  };
 
-  public getValue() {
+  public getValue = () => {
     return this.value;
-  }
+  };
 
-  public expressionNode() {}
+  public expressionNode = () => {};
 
-  public tokenLiteral() {
+  public tokenLiteral = () => {
     return this.token.literal;
-  }
+  };
 
-  public string() {
+  public string = () => {
     return this.value;
-  }
+  };
 }

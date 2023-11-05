@@ -9,17 +9,17 @@ export class ReturnStatement implements Statement {
     this.token = token;
   }
 
-  public static newReturnStatement(token: Token) {
+  public static newReturnStatement = (token: Token) => {
     return new ReturnStatement(token);
-  }
+  };
 
-  public statementNode() {}
+  public statementNode = () => {};
 
-  public tokenLiteral() {
+  public tokenLiteral = () => {
     return this.token.literal;
-  }
+  };
 
-  public string() {
+  public string = () => {
     let out = "";
 
     out += this.tokenLiteral() + " ";
@@ -29,5 +29,5 @@ export class ReturnStatement implements Statement {
     out += ";";
 
     return out;
-  }
+  };
 }

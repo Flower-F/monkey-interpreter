@@ -11,33 +11,33 @@ export class LetStatement implements Statement {
     this.token = token;
   }
 
-  public static newLetStatement(token: Token) {
+  public static newLetStatement = (token: Token) => {
     return new LetStatement(token);
-  }
+  };
 
-  public setName(name?: Identifier) {
+  public setName = (name?: Identifier) => {
     this.name = name;
-  }
+  };
 
-  public getName() {
+  public getName = () => {
     return this.name;
-  }
+  };
 
-  public getValue() {
+  public getValue = () => {
     return this.value;
-  }
+  };
 
-  public setValue(value: Expression) {
+  public setValue = (value: Expression) => {
     this.value = value;
-  }
+  };
 
-  public statementNode() {}
+  public statementNode = () => {};
 
-  public tokenLiteral() {
+  public tokenLiteral = () => {
     return this.token.literal;
-  }
+  };
 
-  public string() {
+  public string = () => {
     let out = "";
 
     out += this.tokenLiteral() + " ";
@@ -50,5 +50,5 @@ export class LetStatement implements Statement {
 
     out += ";";
     return out;
-  }
+  };
 }

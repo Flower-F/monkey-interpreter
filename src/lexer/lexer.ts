@@ -14,13 +14,13 @@ export class Lexer {
     this.ch = "";
   }
 
-  public static newLexer(input: string): Lexer {
+  public static newLexer = (input: string): Lexer => {
     const lexer = new Lexer(input);
     lexer.readChar();
     return lexer;
-  }
+  };
 
-  public getNextToken(): Token {
+  public getNextToken = (): Token => {
     this.skipWhiteSpace();
 
     let token: Token = {
@@ -68,39 +68,39 @@ export class Lexer {
     token = Token.newToken(TokenTypes.ILLEGAL, this.ch);
     this.readChar();
     return token;
-  }
+  };
 
-  private readChar() {
+  private readChar = () => {
     this.ch = this.input[this.readPosition] || "";
     this.position = this.readPosition;
     this.readPosition++;
-  }
+  };
 
-  private readIdentifier() {
+  private readIdentifier = () => {
     const position = this.position;
     while (isLetter(this.ch)) {
       this.readChar();
     }
 
     return this.input.slice(position, this.position);
-  }
+  };
 
-  private readNumber() {
+  private readNumber = () => {
     const position = this.position;
     while (isDigit(this.ch)) {
       this.readChar();
     }
 
     return this.input.slice(position, this.position);
-  }
+  };
 
-  private skipWhiteSpace() {
+  private skipWhiteSpace = () => {
     while (this.ch === " " || this.ch === "\t" || this.ch === "\n" || this.ch === "\r") {
       this.readChar();
     }
-  }
+  };
 
-  private getNextChar() {
+  private getNextChar = () => {
     return this.input[this.readPosition] || "";
-  }
+  };
 }

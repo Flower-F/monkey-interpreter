@@ -7,31 +7,31 @@ export class Program implements ASTNode {
     this.statements = statements;
   }
 
-  public static newProgram() {
+  public static newProgram = () => {
     return new Program([]);
-  }
+  };
 
-  public setStatements(statements: Statement[]) {
+  public setStatements = (statements: Statement[]) => {
     this.statements = statements;
-  }
+  };
 
-  public pushStatement(statement: Statement) {
+  public pushStatement = (statement: Statement) => {
     this.statements.push(statement);
-  }
+  };
 
-  public getStatements() {
+  public getStatements = () => {
     return this.statements;
-  }
+  };
 
-  public tokenLiteral() {
+  public tokenLiteral = () => {
     if (this.statements.length > 0) {
       return this.statements[0]?.tokenLiteral() || "";
     }
 
     return "";
-  }
+  };
 
-  public string() {
+  public string = () => {
     let out = "";
 
     this.statements.forEach((statement) => {
@@ -39,5 +39,5 @@ export class Program implements ASTNode {
     });
 
     return out;
-  }
+  };
 }
